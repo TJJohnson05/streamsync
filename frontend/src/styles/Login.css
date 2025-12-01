@@ -1,0 +1,81 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fafafa;
+  font-family: 'Inter', sans-serif;
+}
+
+.login-card {
+  width: 320px;
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #111;
+  margin-bottom: 1.5rem;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: #9146ff;
+  box-shadow: 0 0 3px rgba(145, 70, 255, 0.4);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #9146ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-btn:hover {
+  background-color: #772ce8;
+}
+
+.forgot {
+  margin-top: 0.75rem;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.signup-text {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.signup-link {
+  color: #9146ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+

@@ -1,0 +1,69 @@
+.watch-page {
+  background-color: #0e0e10;
+  color: #fff;
+  min-height: 100vh;
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.watch-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  gap: 30px;
+}
+
+.video-section {
+  flex: 3;
+  background-color: #18181b;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.video-player img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.stream-details {
+  margin-top: 15px;
+}
+
+.stream-title {
+  color: #a970ff;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.streamer-name {
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.viewers {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #ddd;
+}
+
+.chat-section {
+  flex: 1;
+  background-color: #18181b;
+  border-radius: 10px;
+  padding: 15px;
+  height: fit-content;
+  max-height: 700px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
