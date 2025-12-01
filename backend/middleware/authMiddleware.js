@@ -1,16 +1,19 @@
+// middleware/auth.js
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
-  const token = req.header("x-auth-token");
+module.exports = function (req, res, next) {
+  const auth = req.headers.authorization || req.header('x-auth-token') || '';
+  let token = '';
+  if (auth.startsWith('Bearer ')) token = auth.slice(7);
+  else token = auth;
 
-  if (!token) return res.status(401).json({ message: "No token, authorization denied" });
+  if (!token) return res.status(401).json({ message: 'No token' });
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.id;
+    const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
+    req.userId = payload.id;
     next();
-  } catch (error) {
-    res.status(400).json({ message: "Invalid token" });
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid token' });
   }
 };
-
