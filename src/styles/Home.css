@@ -1,0 +1,104 @@
+.home-page {
+  background-color: #0e0e10;
+  min-height: 100vh;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+.home-content {
+  padding-top: 80px; /* space for fixed navbar */
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* --- Featured Streams --- */
+.featured-section h2,
+.categories-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #dcd3ff;
+}
+
+.stream-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.stream-card {
+  background-color: #1f1f23;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.stream-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(130, 68, 255, 0.3);
+}
+
+.stream-thumbnail {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.stream-info {
+  padding: 0.8rem 1rem;
+}
+
+.stream-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.3rem;
+}
+
+.stream-info p {
+  color: #adadb8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.stream-info span {
+  font-size: 0.8rem;
+  color: #9a9ab3;
+}
+
+/* --- Categories --- */
+.categories-section {
+  margin-top: 3rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.2rem;
+}
+
+.category-card {
+  text-align: center;
+  background-color: #1f1f23;
+  padding: 1rem;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+.category-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.category-card p {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+

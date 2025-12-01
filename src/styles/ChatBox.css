@@ -1,0 +1,34 @@
+.chatbox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #0e0e10;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.chat-messages p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.chat-form input {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0e0e10;
+  color: #fff;
+}
+
+.chat-form input::placeholder {
+  color: #888;
+}
+
+
