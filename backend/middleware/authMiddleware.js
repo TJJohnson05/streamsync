@@ -2,12 +2,16 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
-  const auth = req.headers.authorization || req.header('x-auth-token') || '';
+  const authHeader = req.headers.authorization || req.header('x-auth-token') || '';
   let token = '';
-  if (auth.startsWith('Bearer ')) token = auth.slice(7);
-  else token = auth;
 
-  if (!token) return res.status(401).json({ message: 'No token' });
+  if (typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+	token = authHeader.slice(7)
+  } else {
+	token = authHeader;
+  }
+  if (!token) 
+	return res.status(401).json({ message: 'No token provided' });
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
@@ -16,4 +20,6 @@ module.exports = function (req, res, next) {
   } catch (err) {
     return res.status(401).json({ message: 'Invalid token' });
   }
+  module.exports = auth;
 };
+
