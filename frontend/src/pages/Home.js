@@ -1,5 +1,7 @@
+// src/pages/Home.js
 import React from 'react';
 import '../styles/Home.css';
+import Navbar from '../components/Navbar';
 
 export default function Home() {
   const featuredStreams = [
@@ -42,6 +44,8 @@ export default function Home() {
 
   return (
     <div className="home-page">
+      {/* 🔹 Navbar at the top of the page */}
+      <Navbar />
 
       <div className="home-content">
         <section className="featured-section">
@@ -49,7 +53,11 @@ export default function Home() {
           <div className="stream-grid">
             {featuredStreams.map(stream => (
               <div key={stream.id} className="stream-card">
-                <img src={stream.thumbnail} alt={stream.title} className="stream-thumbnail" />
+                <img
+                  src={stream.thumbnail}
+                  alt={stream.title}
+                  className="stream-thumbnail"
+                />
                 <div className="stream-info">
                   <h3>{stream.title}</h3>
                   <p>{stream.streamer}</p>
@@ -65,7 +73,11 @@ export default function Home() {
           <div className="category-grid">
             {categories.map(cat => (
               <div key={cat.id} className="category-card">
-                <img src={cat.img} alt={cat.name} className="category-img" />
+                <img
+                  src={cat.img}
+                  alt={cat.name}
+                  className="category-img"
+                />
                 <p>{cat.name}</p>
               </div>
             ))}

@@ -14,11 +14,15 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Home */}
         <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
 
+        {/* Auth */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
 
+        {/* Protected routes (must be logged in) */}
         <Route
           path="/watch/:streamId"
           element={
@@ -27,7 +31,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/browse"
           element={
@@ -36,7 +39,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/profile"
           element={
@@ -46,7 +48,7 @@ function App() {
           }
         />
 
-        {/* fallback 404 */}
+        {/* Fallback */}
         <Route path="*" element={<Home />} />
       </Routes>
     </Router>

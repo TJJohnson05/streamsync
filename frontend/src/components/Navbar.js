@@ -1,8 +1,8 @@
 // src/components/Navbar.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getUser, isLoggedIn, clearAuth } from '../utils/auth';
 import '../styles/Navbar.css';
+import { getUser, isLoggedIn, clearAuth } from '../utils/auth';
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -14,27 +14,39 @@ export default function Navbar() {
     navigate('/login', { replace: true });
   }
 
+  function handleLogoClick() {
+    navigate('/home');
+  }
+
   return (
     <nav className="navbar">
-      <div className="navbar-left">
-        <img src="/logo192.png" alt="logo" className="navbar-logo" />
+      <div className="navbar-left" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+        <img src="/logo192.png" alt="StreamSync logo" className="navbar-logo" />
         <span className="navbar-title">StreamSync</span>
       </div>
 
       <div className="navbar-center">
-        {/* search box etc */}
+        <input
+          className="navbar-search"
+          placeholder="Search streams, games, or creators"
+        />
       </div>
 
       <div className="navbar-right">
         <Link to="/browse" className="nav-link">
           Browse
         </Link>
+
         {loggedIn ? (
           <>
             <Link to="/profile" className="nav-link">
               {user?.username || 'Profile'}
             </Link>
-            <button onClick={handleLogout} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <button
+              onClick={handleLogout}
+              className="nav-link"
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            >
               Logout
             </button>
           </>
