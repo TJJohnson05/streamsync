@@ -19,7 +19,7 @@ export default function SignUp({ onSignedUp }) {
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://192.168.1.46:4000'}/api/auth/register`,
+        `${process.env.REACT_APP_API_URL || 'http://192.168.10.20:4000'}/api/auth/register`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
