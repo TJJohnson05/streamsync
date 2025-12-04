@@ -1,69 +1,152 @@
+/* ===============================
+   WATCH STREAM PAGE LAYOUT
+   =============================== */
+
 .watch-page {
-  background-color: #0e0e10;
-  color: #fff;
-  min-height: 100vh;
-  padding: 20px 40px;
   display: flex;
   flex-direction: column;
+  padding: 1.5rem 2rem;
+  background-color: #0f0f11;
+  min-height: calc(100vh - 60px); /* adjust if navbar height differs */
+  color: #f5f5f5;
+}
+
+/* -------------------------------
+   MAIN CONTENT
+   ------------------------------- */
+
+.watch-main {
+  display: flex;
+  gap: 2rem;
+}
+
+/* -------------------------------
+   FAKE VIDEO PLAYER / THUMBNAIL
+   ------------------------------- */
+
+.watch-video-container {
+  flex: 3;
+  background-color: #18181b;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  height: 500px; /* adjust if you want it taller */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.watch-video-placeholder {
+  text-align: center;
+  color: #cfcfcf;
+}
+
+.watch-video-placeholder h2 {
+  margin-top: 0.5rem;
+}
+
+/* -------------------------------
+   STREAM INFO PANEL
+   ------------------------------- */
+
+.watch-info {
+  flex: 2;
+  background-color: #18181b;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* title row (title + favorite button) */
+
+.watch-title-row {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-.watch-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  max-width: 1400px;
-  gap: 30px;
+.watch-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-.video-section {
-  flex: 3;
-  background-color: #18181b;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
+/* -------------------------------
+   FAVORITE BUTTON
+   ------------------------------- */
 
-.video-player img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.stream-details {
-  margin-top: 15px;
-}
-
-.stream-title {
+.watch-favorite-btn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #a970ff;
+  background: transparent;
   color: #a970ff;
-  font-size: 1.8rem;
-  margin-bottom: 8px;
-}
-
-.streamer-name {
-  color: #ccc;
-  margin-bottom: 5px;
-}
-
-.viewers {
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.1s ease, border 0.25s;
   font-size: 0.9rem;
-  color: #777;
-  margin-bottom: 15px;
 }
 
-.description {
+.watch-favorite-btn:hover {
+  background: rgba(169, 112, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.watch-favorite-btn--active {
+  background: #a970ff;
+  color: #fff;
+  border-color: #a970ff;
+}
+
+.watch-favorite-btn--active:hover {
+  background: #8b54ff;
+}
+
+/* -------------------------------
+   STREAMER NAME + CATEGORY + VIEWS
+   ------------------------------- */
+
+.watch-streamer {
   font-size: 1rem;
-  line-height: 1.4;
-  color: #ddd;
+  margin: 0;
+  color: #dcdcdc;
 }
 
-.chat-section {
-  flex: 1;
-  background-color: #18181b;
-  border-radius: 10px;
-  padding: 15px;
-  height: fit-content;
-  max-height: 700px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+.watch-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
 }
+
+.watch-category {
+  background: #2f3136;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+  color: #bcbcbc;
+}
+
+.watch-views {
+  color: #9a9a9a;
+}
+
+/* -------------------------------
+   STREAM DESCRIPTION
+   ------------------------------- */
+
+.watch-description {
+  margin-top: 0.75rem;
+  color: #bfbfbf;
+  line-height: 1.4;
+}
+
+/* -------------------------------
+   ERROR TEXT
+   ------------------------------- */
+
+.watch-error {
+  color: #ff7272;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
