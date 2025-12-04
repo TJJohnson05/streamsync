@@ -1,6 +1,8 @@
+// src/pages/Browse.js
 import React from 'react';
 import '../styles/Browse.css';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 export default function Browse() {
   // Mock data for streams (can later be replaced with API call)
@@ -14,9 +16,9 @@ export default function Browse() {
     },
     {
       id: 2,
-      title: 'Just Chatting with Viewers',
-      streamer: 'ChatQueen',
-      viewers: '1.4K',
+      title: 'Cozy Minecraft Building Stream',
+      streamer: 'BlockCrafter',
+      viewers: '1.5K',
       thumbnail: 'https://via.placeholder.com/400x225?text=Stream+2'
     },
     {
@@ -43,27 +45,39 @@ export default function Browse() {
   ];
 
   return (
-    <div className="browse-container">
-      <h2 className="browse-title">Browse Live Streams</h2>
-      <div className="stream-grid">
-        {streams.map((stream) => (
-          <Link key={stream.id} to={`/watch/${stream.id}`} className="stream-card">
-            <div className="thumbnail-wrapper">
-              <img
-                src={stream.thumbnail}
-                alt={stream.title}
-                className="stream-thumbnail"
-              />
-              <div className="viewer-count">{stream.viewers} watching</div>
-            </div>
-            <div className="stream-info">
-              <h3>{stream.title}</h3>
-              <p>@{stream.streamer}</p>
-            </div>
-          </Link>
-        ))}
+    <div className="browse-page">
+      {/* Navbar at top just like Home */}
+      <Navbar />
+
+      <div className="browse-container">
+        <h2 className="browse-title">Browse Live Streams</h2>
+        <div className="stream-grid">
+          {streams.map((stream) => (
+            <Link
+              key={stream.id}
+              to={`/watch/${stream.id}`}
+              className="stream-card"
+            >
+              <div className="thumbnail-wrapper">
+                <img
+                  src={stream.thumbnail}
+                  alt={stream.title}
+                  className="stream-thumbnail"
+                />
+                <div className="viewer-count">
+                  {stream.viewers} watching
+                </div>
+              </div>
+              <div className="stream-info">
+                <h3>{stream.title}</h3>
+                <p>@{stream.streamer}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
+
 
