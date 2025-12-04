@@ -1,103 +1,66 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../styles/Profile.css';
-import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import { getUser } from '../utils/auth';
 
 export default function Profile() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [bio, setBio] = useState('Full-stack developer & streamer. Building StreamSync live!');
-  const [banner, setBanner] = useState('https://placehold.co/1200x300/3a0ca3/ffffff?text=Profile+Banner');
+  const authUser = getUser();
 
-  const user = {
-    username: 'TylerDev',
-    profilePic: 'https://placehold.co/120x120/8244ff/ffffff?text=T',
-    followers: 1024,
-    following: 50,
-  };
-
-  const streams = [
-    {
-      id: 1,
-      title: 'Live Coding: StreamSync Dashboard',
-      thumbnail: 'https://placehold.co/400x225/9333ea/ffffff?text=Live+Now',
-      viewers: 210,
-    },
-    {
-      id: 2,
-      title: 'Building React Components',
-      thumbnail: 'https://placehold.co/400x225/4f46e5/ffffff?text=Past+Stream',
-      viewers: 0,
-    },
-  ];
-
-  const handleSave = () => {
-    setIsEditing(false);
-    alert('Profile updated! (In a real app, this would save to the database.)');
-  };
+  const username = authUser?.username || 'Unknown User';
+  const email = authUser?.email || 'unknown@example.com';
+  const avatarLetter = (authUser?.username?.[0] || 'U').toUpperCase();
 
   return (
     <div className="profile-page">
-      <div className="profile-banner">
-        <img src={banner} alt="Profile banner" />
-      </div>
+      <Navbar />
 
-      <div className="profile-info">
-        <img src={user.profilePic} alt="Profile" className="profile-pic" />
-        <div className="profile-details">
-          <h2>{user.username}</h2>
-          <p className="bio">{bio}</p>
-          <div className="stats">
-            <span>{user.followers} Followers</span> • <span>{user.following} Following</span>
-          </div>
-          <button className="edit-btn" onClick={() => setIsEditing(true)}>Edit Profile</button>
-        </div>
-      </div>
+      <div className="profile-layout">
+        <div className="profile-main">
+          <div className="profile-card">
+            <div className="profile-avatar-circle">
+              {avatarLetter}
+            </div>
 
-      <div className="stream-section">
-        <h3>Streams</h3>
-        <div className="stream-grid">
-          {streams.map((stream) => (
-            <Link key={stream.id} to={`/watch/${stream.id}`} className="stream-card">
-              <img src={stream.thumbnail} alt={stream.title} />
-              <div className="stream-info">
-                <h4>{stream.title}</h4>
-                {stream.viewers > 0 && (
-                  <p className="live-tag">{stream.viewers} watching</p>
-                )}
+            <h2 className="profile-username">{username}</h2>
+            <p className="profile-email">{email}</p>
+
+            <div className="profile-stats">
+              <div className="stat">
+                <span className="stat-number">0</span>
+                <span className="stat-label">Followers</span>
               </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+              <div className="stat">
+                <span className="stat-number">0</span>
+                <span className="stat-label">Following</span>
+              </div>
+            </div>
 
-      {isEditing && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h3>Edit Profile</h3>
-            <label>Bio:</label>
-            <textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              rows="3"
-              placeholder="Enter your bio..."
-            />
-
-            <label>Banner Image URL:</label>
-            <input
-              type="text"
-              value={banner}
-              onChange={(e) => setBanner(e.target.value)}
-              placeholder="Paste new banner image link..."
-            />
-
-            <div className="modal-actions">
-              <button className="save-btn" onClick={handleSave}>Save</button>
-              <button className="cancel-btn" onClick={() => setIsEditing(false)}>Cancel</button>
+            <div className="profile-actions">
+              <button className="primary-btn">Edit Profile</button>
+              <button className="secondary-btn">Go Live</button>
             </div>
           </div>
         </div>
-      )}
+
+        <div className="profile-side">
+          <div className="profile-panel">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="/browse">Browse Streams</a></li>
+              <li><a href="/home">Back to Home</a></li>
+            </ul>
+          </div>
+
+          <div className="profile-panel">
+            <h3>About</h3>
+            <p>
+              This is your StreamSync profile. In the future, this can show your bio,
+              recent streams, and panels, similar to a Twitch channel page.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
 

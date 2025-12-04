@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import '../styles/Login.css'; 
+import '../styles/Login.css';
 import { useNavigate } from 'react-router-dom';
+import { saveAuth } from '../utils/auth';
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
@@ -11,17 +12,31 @@ export default function Login({ onLogin }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+
     try {
-      const res = await fetch('http://192.168.1.46:4000/api/auth/login', {
+      const res = await fetch('http://192.168.10.20:4000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      if (!res.ok) throw new Error('Login failed');
+
       const data = await res.json();
-      onLogin && onLogin(data);
+
+      if (!res.ok) {
+        setError(data.message || 'Login failed');
+        return;
+      }
+
+      // STORE AUTH TOKEN + USER
+	saveAuth(data.token, data.user)
+      // Optional parent callback
+      onLogin && onLogin(data.user);
+
+      // REDIRECT
+      navigate('/home', {replace: true});
+
     } catch (err) {
-      setError(err.message);
+      setError('Network error — cannot reach backend');
     }
   }
 
@@ -34,11 +49,12 @@ export default function Login({ onLogin }) {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             type="password"
             placeholder="Password"
@@ -50,8 +66,6 @@ export default function Login({ onLogin }) {
           <button type="submit" className="login-btn">
             Log In
           </button>
-
-          <p className="forgot">Forgot password?</p>
 
           {error && <div className="error">{error}</div>}
         </form>
@@ -66,3 +80,5 @@ export default function Login({ onLogin }) {
     </div>
   );
 }
+
+
