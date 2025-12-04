@@ -9,7 +9,6 @@ const streamSchema = new mongoose.Schema(
     thumbnailUrl: { type: String },
     isLive: { type: Boolean, default: false },
     views: { type: Number, default: 0 },
-    tags: [String],
     description: String
   },
   { timestamps: true }

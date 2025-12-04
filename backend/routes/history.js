@@ -6,13 +6,12 @@ const Stream = require('../models/Stream');
 const auth = require('../middleware/authMiddleware');
 
 // GET /api/history
-// Get the logged-in user's watch history, newest first
 router.get('/', auth, async (req, res) => {
   try {
     const items = await History.find({ user: req.userId })
       .sort({ watchedAt: -1 })
       .limit(100)
-      .populate('stream'); // gives full stream object
+      .populate('stream');
 
     res.json({ history: items });
   } catch (err) {
@@ -21,8 +20,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// POST /api/history
-// Body: { streamId }
+// POST /api/history   { streamId }
 router.post('/', auth, async (req, res) => {
   try {
     const { streamId } = req.body;
@@ -47,8 +45,7 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-// DELETE /api/history
-// Clear the logged-in user's history
+// DELETE /api/history  (clear all for this user)
 router.delete('/', auth, async (req, res) => {
   try {
     await History.deleteMany({ user: req.userId });

@@ -6,7 +6,6 @@ const Stream = require('../models/Stream');
 const auth = require('../middleware/authMiddleware');
 
 // GET /api/favorites
-// Get the logged-in user's favorite streams
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.userId).populate('favorites');
@@ -19,8 +18,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// POST /api/favorites/:streamId
-// Add a stream to favorites
+// POST /api/favorites/:streamId  (add)
 router.post('/:streamId', auth, async (req, res) => {
   try {
     const { streamId } = req.params;
@@ -45,12 +43,10 @@ router.post('/:streamId', auth, async (req, res) => {
   }
 });
 
-// DELETE /api/favorites/:streamId
-// Remove a stream from favorites
+// DELETE /api/favorites/:streamId  (remove)
 router.delete('/:streamId', auth, async (req, res) => {
   try {
     const { streamId } = req.params;
-
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
 

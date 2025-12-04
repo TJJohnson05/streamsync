@@ -3,7 +3,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const authMiddleware = require('../middleware/authMiddleware'); // see below
+const authMiddleware = require('../middleware/auth'); // see below
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
@@ -50,14 +50,20 @@ router.post('/login', async (req, res) => {
 });
 
 // PROTECTED: get current user
-router.get('/me', authMiddleware, async (req, res) => {
+router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.userId).select('-password');
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     res.json({ user });
   } catch (err) {
+    console.error('Error in /me:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
+
 module.exports = router;
+
+
