@@ -1,4 +1,8 @@
 // server.js
+const streamRoutes = require('./routes/streams');
+const historyRoutes = require('./routes/history');
+const favoritesRoutes = require('./routes/favorites');
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -25,6 +29,11 @@ app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/streams', streamRoutes);
+app.use('/api/history', historyRoutes);
+app.use('/api/favorites', favoritesRoutes);
+
+
 
 // Start server once DB is connected
 connectDB()
