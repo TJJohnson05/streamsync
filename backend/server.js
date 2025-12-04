@@ -1,34 +1,48 @@
 // server.js
+const streamRoutes = require('./routes/streams');
+const historyRoutes = require('./routes/history');
+const favoritesRoutes = require('./routes/favorites');
+
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/auth');
 
 const app = express();
+
+// Port and CORS config
+const PORT = process.env.PORT || 4000;
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000').split(',');
+
+// Middleware
 app.use(express.json());
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
 
-// allow frontend origin(s)
-const allowed = (process.env.CORS_ORIGINS || 'http://localhost:3000').split(',');
-app.use(cors({ origin: allowed }));
-
-app.use('/api/auth', authRoutes);
-
+// Health check
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-const PORT = process.env.PORT || 4000;
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/streams', streamRoutes);
+app.use('/api/history', historyRoutes);
+app.use('/api/favorites', favoritesRoutes);
 
-mongoose.connect(process.env.MONGO_URI)   // <- no options here
+
+
+// Start server once DB is connected
+connectDB()
   .then(() => {
-    console.log('MongoDB connected');
-    app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
+    app.listen(PORT, () => {
+      console.log(`Server listening on ${PORT}`);
+    });
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('Mongo connection error', err);
     process.exit(1);
   });
-
-
-
-
