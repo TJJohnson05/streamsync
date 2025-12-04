@@ -1,5 +1,5 @@
 // src/components/Navbar.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 import { getUser, isLoggedIn, clearAuth } from '../utils/auth';
@@ -8,6 +8,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const loggedIn = isLoggedIn();
   const user = getUser();
+  const [searchTerm, setSearchTerm] = useState('');
 
   function handleLogout() {
     clearAuth();
@@ -18,9 +19,20 @@ export default function Navbar() {
     navigate('/home');
   }
 
+  function handleSearchKeyDown(e) {
+    if (e.key === 'Enter' && searchTerm.trim()) {
+      // Send user to /browse with a query param
+      navigate(`/browse?q=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  }
+
   return (
     <nav className="navbar">
-      <div className="navbar-left" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+      <div
+        className="navbar-left"
+        onClick={handleLogoClick}
+        style={{ cursor: 'pointer' }}
+      >
         <img src="/logo192.png" alt="StreamSync logo" className="navbar-logo" />
         <span className="navbar-title">StreamSync</span>
       </div>
@@ -29,10 +41,19 @@ export default function Navbar() {
         <input
           className="navbar-search"
           placeholder="Search streams, games, or creators"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleSearchKeyDown}
         />
       </div>
 
       <div className="navbar-right">
+        {loggedIn && (
+          <Link to="/history" className="nav-link">
+            History
+          </Link>
+        )}
+
         <Link to="/browse" className="nav-link">
           Browse
         </Link>

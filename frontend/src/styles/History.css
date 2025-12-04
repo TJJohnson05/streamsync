@@ -1,0 +1,62 @@
+/* src/styles/History.css */
+
+.history-page {
+  padding: 1.5rem 2rem;
+  color: #f5f5f5;
+  background-color: #0f0f11;
+  min-height: calc(100vh - 60px); /* adjust if navbar height differs */
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.history-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.history-clear-button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #9147ff;
+  color: #fff;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.history-clear-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.history-clear-button:not(:disabled):hover {
+  background: #772ce8;
+  transform: translateY(-1px);
+}
+
+.history-error {
+  color: #ff6b6b;
+  margin-bottom: 0.75rem;
+}
+
+.history-empty {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #cfcfcf;
+}
+
+/* Grid of stream cards */
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* You can reuse or complement StreamCard styles here if needed */
