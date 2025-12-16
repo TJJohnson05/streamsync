@@ -3,7 +3,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const auth = require('../middleware/auth'); // ✅ make sure this matches filename
+const auth = require('../middleware/authMiddleware'); // ✅ make sure this matches filename
 const { logToVM4 } = require('../server');  // ✅ ADD
 const router = express.Router();
 
@@ -33,9 +33,15 @@ router.post('/register', async (req, res) => {
     logToVM4(`User registered: email=${email}, username=${username}`);
 
     res.json({
-      token,
-      user: { id: user._id, email: user.email, username: user.username }
-    });
+  token,
+  user: {
+    id: user._id,
+    email: user.email,
+    username: user.username,
+    quizCompleted: user.quizCompleted, // ✅ add
+    interests: user.interests          // ✅ add (optional but useful)
+  }
+});
   } catch (err) {
     console.error(err);
     logToVM4(`Register error: ${err.message}`); // ✅ AUTO LOG
@@ -68,9 +74,15 @@ router.post('/login', async (req, res) => {
     logToVM4(`User login success: email=${email}`);
 
     res.json({
-      token,
-      user: { id: user._id, email: user.email, username: user.username }
-    });
+  token,
+  user: {
+    id: user._id,
+    email: user.email,
+    username: user.username,
+    quizCompleted: user.quizCompleted, // ✅ add
+    interests: user.interests          // ✅ add (optional but useful)
+  }
+});
   } catch (err) {
     console.error(err);
     logToVM4(`Login error: ${err.message}`); // ✅ AUTO LOG
