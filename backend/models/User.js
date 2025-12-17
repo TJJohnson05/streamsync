@@ -6,6 +6,14 @@ const userSchema = new mongoose.Schema(
     username: { type: String, required: true, unique: true },
     email:    { type: String, required: true, unique: true },
     password: { type: String, required: true }, // hashed password
+    
+    // ✅ NEW (for onboarding + personalization)
+    quizCompleted: { type: Boolean, default: false },
+    interests: {
+      categories: { type: [String], default: [] },
+      vibes: { type: [String], default: [] },
+      languages: { type: [String], default: [] },
+    },
 
     // For favorites on Profile page
     favorites: [
@@ -19,3 +27,4 @@ const userSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('User', userSchema);
+
