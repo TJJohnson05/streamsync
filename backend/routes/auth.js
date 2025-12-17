@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const auth = require('../middleware/authMiddleware'); // ✅ make sure this matches filename
-const { logToVM4 } = require('../server');  // ✅ ADD
+const { logToVM4 } = require('../utils/logger');
 const router = express.Router();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
