@@ -2,6 +2,7 @@
 const streamRoutes = require('./routes/streams');
 const historyRoutes = require('./routes/history');
 const favoritesRoutes = require('./routes/favorites');
+const onboardingRoutes = require('./routes/onboarding');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -43,6 +44,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/streams', streamRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/favorites', favoritesRoutes);
+app.use('/api/onboarding', onboardingRoutes);
 
 // Start server once DB is connected
 connectDB()
@@ -72,3 +74,11 @@ process.on('unhandledRejection', (reason) => {
 
 // Export logging helper for routes
 module.exports = { app, logToVM4 };
+
+
+
+
+
+
+
+
