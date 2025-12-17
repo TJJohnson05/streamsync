@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { saveAuth } from '../utils/auth';
 import '../styles/SignUp.css';
 
 export default function SignUp({ onSignedUp }) {
@@ -8,6 +10,8 @@ export default function SignUp({ onSignedUp }) {
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,7 +23,7 @@ export default function SignUp({ onSignedUp }) {
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://192.168.10.20:4000'}/api/auth/register`,
+        `${process.env.REACT_APP_API_URL || 'http://192.168.1.46:4000'}/api/auth/register`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -32,7 +36,8 @@ export default function SignUp({ onSignedUp }) {
         setError(data.message || 'Registration failed');
         return;
       }
-      localStorage.setItem('token', data.token);
+      saveAuth(data.token, data.user);
+      navigate('/onboarding-quiz', { replace: true });
       onSignedUp && onSignedUp(data);
     } catch (err) {
       setLoading(false);
@@ -43,7 +48,9 @@ export default function SignUp({ onSignedUp }) {
   return (
     <div className="signup-container">
       <form className="signup-card" onSubmit={handleSubmit}>
-          <h1>StreamSync</h1>
+              <h1>StreamSync</h1>
+        </div>
+
         <h2>Create an account</h2>
 
         <input
@@ -91,5 +98,3 @@ export default function SignUp({ onSignedUp }) {
     </div>
   );
 }
-
-

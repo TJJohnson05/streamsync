@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import '../styles/Login.css';
+import './Login.css';
 import { useNavigate } from 'react-router-dom';
-import { saveAuth } from '../utils/auth';
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
@@ -14,7 +13,7 @@ export default function Login({ onLogin }) {
     setError('');
 
     try {
-      const res = await fetch('http://192.168.10.20:4000/api/auth/login', {
+      const res = await fetch('http://192.168.1.46:4000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -27,13 +26,18 @@ export default function Login({ onLogin }) {
         return;
       }
 
-      // STORE AUTH TOKEN + USER
-	saveAuth(data.token, data.user)
-      // Optional parent callback
-      onLogin && onLogin(data.user);
+    // STORE AUTH TOKEN + USER
+saveAuth(data.token, data.user);
 
-      // REDIRECT
-      navigate('/home', {replace: true});
+// Optional parent callback
+onLogin && onLogin(data.user);
+
+// ✅ REDIRECT based on onboarding quiz
+if (data.user?.quizCompleted) {
+  navigate('/home', { replace: true });
+} else {
+  navigate('/onboarding-quiz', { replace: true });
+}
 
     } catch (err) {
       setError('Network error — cannot reach backend');
@@ -80,5 +84,3 @@ export default function Login({ onLogin }) {
     </div>
   );
 }
-
-

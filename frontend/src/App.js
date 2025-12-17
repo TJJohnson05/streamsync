@@ -10,6 +10,7 @@ import WatchStream from './pages/WatchStream';
 import Browse from './pages/Browse';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
+import OnboardingQuiz from './pages/OnboardingQuiz';
 
 function App() {
   return (
@@ -56,6 +57,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/onboarding-quiz"
+  element={
+    <ProtectedRoute>
+      <OnboardingQuiz />
+    </ProtectedRoute>
+  }
+/>
+
+
+ 
 
         {/* Fallback */}
         <Route path="*" element={<Home />} />
@@ -65,3 +77,8 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
