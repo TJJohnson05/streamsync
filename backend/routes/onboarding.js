@@ -2,7 +2,7 @@
 const express = require("express");
 const User = require("../models/User");
 const auth = require("../middleware/authMiddleware");
-const { logToVM4 } = require("../server");
+const { logToVM4 } = require('../utils/logger');
 
 const router = express.Router();
 
