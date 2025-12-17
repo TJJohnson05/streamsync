@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
+import { saveAuth } from '../utils/auth';
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
