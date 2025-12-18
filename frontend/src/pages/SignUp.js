@@ -22,9 +22,7 @@ export default function SignUp({ onSignedUp }) {
     }
     setLoading(true);
     try {
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://192.168.1.46:4000'}/api/auth/register`,
-        {
+     const res = await fetch('http://192.168.10.20:4000/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, username, password }),
@@ -49,7 +47,6 @@ export default function SignUp({ onSignedUp }) {
     <div className="signup-container">
       <form className="signup-card" onSubmit={handleSubmit}>
               <h1>StreamSync</h1>
-        </div>
 
         <h2>Create an account</h2>
 
