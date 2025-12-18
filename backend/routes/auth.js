@@ -74,6 +74,68 @@ router.post('/register', async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 });
+// --------------------
+// RESEND VERIFY EMAIL
+// --------------------
+router.post('/resend-verification', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) return res.status(400).json({ message: "Missing email" });
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Don't reveal whether an email exists (optional security)
+      return res.json({ message: "If that email exists, a verification link was sent." });
+    }
+
+    if (user.emailVerified) {
+      return res.status(400).json({ message: "Email is already verified. Please log in." });
+    }
+
+    // Create new verification token (send raw token, store hash)
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+
+    user.emailVerifyTokenHash = tokenHash;
+    user.emailVerifyTokenExpires = new Date(Date.now() + 1000 * 60 * 30); // 30 min
+    await user.save();
+
+    const frontendBase = process.env.FRONTEND_URL || "http://localhost:3000";
+    const verifyUrl = `${frontendBase}/verify-email?token=${rawToken}&email=${encodeURIComponent(user.email)}`;
+
+    // Send email through your FRONTEND email-gateway VM
+    const body = JSON.stringify({
+      toEmail: user.email,
+      verifyUrl,
+    });
+
+    const emailGatewayUrl = process.env.EMAIL_GATEWAY_URL || "http://192.168.10.10:5050/internal/send-verify-email";
+
+    const resp = await fetch(emailGatewayUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-INTERNAL-KEY": process.env.INTERNAL_KEY,
+      },
+      body,
+    });
+
+    if (!resp.ok) {
+      const t = await resp.text().catch(() => "");
+      logToVM4(`Resend verification failed: status=${resp.status} body=${t}`);
+      return res.status(500).json({ message: "Failed to send verification email" });
+    }
+
+    logToVM4(`Verification email resent: email=${user.email}`);
+    return res.json({ message: "Verification email sent. Check your inbox." });
+  } catch (err) {
+    console.error(err);
+    logToVM4(`Resend verification error: ${err.message}`);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 // --------------------
 // VERIFY EMAIL
@@ -113,6 +175,69 @@ router.get('/verify-email', async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 });
+
+// --------------------
+// RESEND VERIFY EMAIL
+// --------------------
+router.post('/resend-verification', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) return res.status(400).json({ message: "Missing email" });
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Don't reveal whether an email exists (optional security)
+      return res.json({ message: "If that email exists, a verification link was sent." });
+    }
+
+    if (user.emailVerified) {
+      return res.status(400).json({ message: "Email is already verified. Please log in." });
+    }
+
+    // Create new verification token (send raw token, store hash)
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+
+    user.emailVerifyTokenHash = tokenHash;
+    user.emailVerifyTokenExpires = new Date(Date.now() + 1000 * 60 * 30); // 30 min
+    await user.save();
+
+    const frontendBase = process.env.FRONTEND_URL || "http://localhost:3000";
+    const verifyUrl = `${frontendBase}/verify-email?token=${rawToken}&email=${encodeURIComponent(user.email)}`;
+
+    // Send email through your FRONTEND email-gateway VM
+    const body = JSON.stringify({
+      toEmail: user.email,
+      verifyUrl,
+    });
+
+    const emailGatewayUrl = process.env.EMAIL_GATEWAY_URL || "http://192.168.10.10:5050/internal/send-verify-email";
+
+    const resp = await fetch(emailGatewayUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-INTERNAL-KEY": process.env.INTERNAL_KEY,
+      },
+      body,
+    });
+
+    if (!resp.ok) {
+      const t = await resp.text().catch(() => "");
+      logToVM4(`Resend verification failed: status=${resp.status} body=${t}`);
+      return res.status(500).json({ message: "Failed to send verification email" });
+    }
+
+    logToVM4(`Verification email resent: email=${user.email}`);
+    return res.json({ message: "Verification email sent. Check your inbox." });
+  } catch (err) {
+    console.error(err);
+    logToVM4(`Resend verification error: ${err.message}`);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 // --------------------
 // LOGIN (blocked until verified)
