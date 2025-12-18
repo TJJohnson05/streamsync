@@ -8,7 +8,6 @@ export default function OnboardingQuiz() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Keep it simple: focus on categories first (you can expand later)
   const CATEGORY_OPTIONS = [
     'Gaming',
     'FPS',
@@ -21,8 +20,8 @@ export default function OnboardingQuiz() {
   ];
 
   const [categories, setCategories] = useState([]);
-  const [vibes] = useState([]);      // placeholders (you can add UI later)
-  const [languages] = useState([]);  // placeholders
+  const [vibes] = useState([]);       // placeholders
+  const [languages] = useState([]);   // placeholders
 
   function toggle(list, value) {
     return list.includes(value)
@@ -34,7 +33,6 @@ export default function OnboardingQuiz() {
     e.preventDefault();
     setError('');
 
-    // Basic guard: make sure they picked something
     if (categories.length === 0) {
       setError('Please pick at least one category.');
       return;
@@ -50,11 +48,12 @@ export default function OnboardingQuiz() {
         return;
       }
 
-      const res = await fetch('http://192.168.10.20:4000/api/onboarding/quiz', {
+      // ✅ USE FRONTEND PROXY — NOT BACKEND IP
+      const res = await fetch('/api/onboarding/quiz', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // ✅ matches your auth middleware style
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ categories, vibes, languages }),
       });
@@ -67,10 +66,9 @@ export default function OnboardingQuiz() {
         return;
       }
 
-      // Update stored user so the app knows quizCompleted is now true
+      // Update stored user so quizCompleted is true
       saveAuth(token, data.user);
 
-      // Go to home (recommended feed will load there)
       navigate('/home', { replace: true });
     } catch (err) {
       setError('Network error — cannot reach backend');
@@ -95,7 +93,13 @@ export default function OnboardingQuiz() {
       <form onSubmit={handleSubmit}>
         <h3 style={{ marginBottom: 10 }}>Categories</h3>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+            gap: 10,
+          }}
+        >
           {CATEGORY_OPTIONS.map((opt) => (
             <label key={opt} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <input
@@ -119,3 +123,4 @@ export default function OnboardingQuiz() {
     </div>
   );
 }
+
