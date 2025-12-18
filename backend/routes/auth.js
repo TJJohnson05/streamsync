@@ -55,7 +55,13 @@ router.post('/register', async (req, res) => {
       user.email
     )}`;
 
-    await sendVerifyEmail(user.email, verifyUrl);
+    await fetch('http://192.168.10.10:5050/internal/send-verify-email', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'X-INTERNAL-KEY': process.env.INTERNAL_KEY },
+  body: JSON.stringify({ toEmail: user.email, verifyUrl })
+});
+
+
     logToVM4(`Verification email sent: email=${user.email}, username=${user.username}`);
 
     // ✅ No token returned yet (registration not complete until verified)
@@ -174,5 +180,7 @@ router.get('/me', auth, async (req, res) => {
 });
 
 module.exports = router;
+
+
 
 

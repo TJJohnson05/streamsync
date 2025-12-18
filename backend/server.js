@@ -1,9 +1,12 @@
 // server.js
+const path = require('path')
+require('dotenv').config({ path: '.env' });
+console.log("ENV CHECK:", process.env.SMTP_HOST, process.env.SMTP_PORT, process.env.SMTP_USER);
+
 const streamRoutes = require('./routes/streams');
 const historyRoutes = require('./routes/history');
 const favoritesRoutes = require('./routes/favorites');
 const onboardingRoutes = require('./routes/onboarding');
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
