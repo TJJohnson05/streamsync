@@ -7,6 +7,11 @@ const userSchema = new mongoose.Schema(
     email:    { type: String, required: true, unique: true },
     password: { type: String, required: true }, // hashed password
     
+    emailVerified: { type: Boolean, default: false },
+
+emailVerifyTokenHash: { type: String, default: null },
+emailVerifyTokenExpires: { type: Date, default: null },
+	
     // ✅ NEW (for onboarding + personalization)
     quizCompleted: { type: Boolean, default: false },
     interests: {
@@ -27,4 +32,3 @@ const userSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('User', userSchema);
-
