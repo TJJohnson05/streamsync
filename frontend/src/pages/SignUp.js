@@ -1,53 +1,68 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { saveAuth } from '../utils/auth';
 import '../styles/SignUp.css';
 
-export default function SignUp({ onSignedUp }) {
+export default function SignUp() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+    setMessage('');
+
     if (password !== confirm) {
       setError('Passwords do not match');
       return;
     }
+
     setLoading(true);
+
     try {
-     const res = await fetch('http://192.168.10.20:4000/api/auth/register', {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL || 'http://192.168.10.20:4000'}/api/auth/register`,
+        {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, username, password }),
         }
       );
+
       const data = await res.json();
       setLoading(false);
+
       if (!res.ok) {
         setError(data.message || 'Registration failed');
         return;
       }
-      saveAuth(data.token, data.user);
-      navigate('/onboarding-quiz', { replace: true });
-      onSignedUp && onSignedUp(data);
+
+      // ✅ Registration started, email verification required
+      setMessage(
+        'Account created! Please check your email and verify your account before logging in.'
+      );
+
+      // Optional: redirect to login after a short delay
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 2500);
+
     } catch (err) {
       setLoading(false);
-      setError(err.message || 'Network error');
+      setError('Network error — cannot reach backend');
     }
   }
 
   return (
     <div className="signup-container">
       <form className="signup-card" onSubmit={handleSubmit}>
-              <h1>StreamSync</h1>
-
+        <h1>StreamSync</h1>
         <h2>Create an account</h2>
 
         <input
@@ -83,6 +98,7 @@ export default function SignUp({ onSignedUp }) {
         />
 
         {error && <div className="error">{error}</div>}
+        {message && <div className="success">{message}</div>}
 
         <button type="submit" disabled={loading}>
           {loading ? 'Creating...' : 'Sign Up'}

@@ -1,101 +1,53 @@
-// src/pages/History.js
 import React, { useEffect, useState } from 'react';
-import { fetchHistory, clearHistory } from '../services/api';
-import StreamCard from '../components/StreamCard';
+import { useNavigate } from 'react-router-dom';
+import { getHistory } from '../utils/history';
 import '../styles/History.css';
 
 export default function History() {
-  const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [clearing, setClearing] = useState(false);
-  const [error, setError] = useState('');
+  const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    let isMounted = true;
-
-    (async () => {
-      try {
-        const data = await fetchHistory(); // { history: [...] }
-        if (!isMounted) return;
-        setHistory(data.history || []);
-      } catch (err) {
-        if (!isMounted) return;
-        setError(err.message || 'Could not load history.');
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    })();
-
-    return () => {
-      isMounted = false;
-    };
+    setItems(getHistory());
   }, []);
 
-  async function handleClear() {
-    try {
-      setClearing(true);
-      await clearHistory();
-      setHistory([]);
-    } catch (err) {
-      setError(err.message || 'Could not clear history.');
-    } finally {
-      setClearing(false);
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="history-page">
-        <h1>Your Watch History</h1>
-        <p>Loading history...</p>
-      </div>
-    );
-  }
-
-  const hasHistory = history && history.length > 0;
-
   return (
-    <div className="history-page">
-      <div className="history-header">
-        <h1>Your Watch History</h1>
-        {hasHistory && (
-          <button
-            className="history-clear-button"
-            onClick={handleClear}
-            disabled={clearing}
-          >
-            {clearing ? 'Clearing...' : 'Clear History'}
-          </button>
-        )}
-      </div>
+    <div style={{ maxWidth: 900, margin: '20px auto', padding: 16 }}>
+      <h2>History</h2>
+      <p>Recently viewed streams/videos. This clears when you sign out.</p>
 
-      {error && <p className="history-error">{error}</p>}
-
-      {!hasHistory ? (
-        <p className="history-empty">
-          You haven&apos;t watched any streams yet. Start browsing and watching!
-        </p>
+      {items.length === 0 ? (
+        <div style={{ marginTop: 20 }}>No history yet.</div>
       ) : (
-        <div className="history-grid">
-          {history.map((item) => {
-            const stream = item.stream;
-            if (!stream) return null;
+        <div style={{ display: 'grid', gap: 12, marginTop: 20 }}>
+          {items.map((x) => (
+            <div
+              key={x.id + x.viewedAt}
+              style={{
+                border: '1px solid #ddd',
+                borderRadius: 10,
+                padding: 12,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <div>
+                <div style={{ fontWeight: 700 }}>{x.title || x.streamTitle || 'Stream'}</div>
+                <div style={{ fontSize: 14, opacity: 0.85 }}>
+                  {x.streamerName ? `By ${x.streamerName}` : ''}
+                  {x.category ? ` • ${x.category}` : ''}
+                </div>
+                <div style={{ fontSize: 12, opacity: 0.7 }}>
+                  Viewed: {new Date(x.viewedAt).toLocaleString()}
+                </div>
+              </div>
 
-            return (
-              <StreamCard
-                key={item._id}
-                stream={{
-                  _id: stream._id,
-                  title: stream.title,
-                  streamerName: stream.streamerName,
-                  category: stream.category,
-                  thumbnailUrl: stream.thumbnailUrl,
-                  isLive: stream.isLive,
-                  views: stream.views
-                }}
-              />
-            );
-          })}
+              <button onClick={() => navigate(`/watch/${x.id}`)}>
+                Watch again
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </div>

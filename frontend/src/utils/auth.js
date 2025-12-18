@@ -1,4 +1,5 @@
 // src/utils/auth.js
+import { clearHistory } from './history';
 
 const TOKEN_KEY = 'token';
 const USER_KEY = 'user';
@@ -11,7 +12,9 @@ export function saveAuth(token, user) {
 export function clearAuth() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
+  clearHistory(); // ✅ clears watch history on logout
 }
+
 
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
@@ -30,3 +33,4 @@ export function getUser() {
 export function isLoggedIn() {
   return !!getToken();
 }
+

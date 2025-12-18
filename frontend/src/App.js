@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import VerifyEmail from './pages/VerifyEmail';
 import History from "./pages/History";
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -65,6 +66,8 @@ function App() {
     </ProtectedRoute>
   }
 />
+       <Route path="/verify-email" element={<VerifyEmail />} />
+
 
 
  
@@ -77,8 +80,6 @@ function App() {
 }
 
 export default App;
-
-
 
 
 

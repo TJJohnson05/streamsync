@@ -8,6 +8,7 @@ import {
   fetchFavorites,
 } from "../services/api";
 import "../styles/WatchStream.css"; // if you have a style file
+import { addToHistory } from '../utils/history';
 
 export default function WatchStream() {
   const { id } = useParams(); // /watch/:id
