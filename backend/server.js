@@ -1,18 +1,19 @@
 // server.js
-const path = require('path')
-require('dotenv').config({ path: '.env' });
-console.log("ENV CHECK:", process.env.SMTP_HOST, process.env.SMTP_PORT, process.env.SMTP_USER);
-
+const dmRoutes = require("./routes/dm");
 const streamRoutes = require('./routes/streams');
 const historyRoutes = require('./routes/history');
 const favoritesRoutes = require('./routes/favorites');
 const onboardingRoutes = require('./routes/onboarding');
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const { exec } = require('child_process');   // ✅ ADD
 const app = express();
+const userRoutes = require("./routes/users");
+
+
 
 // ===== Logging helper (NEW) =====
 const LOG_SCRIPT = '/home/backend/log_to_vm4.sh'; // adjust if path differs
@@ -48,6 +49,8 @@ app.use('/api/streams', streamRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/favorites', favoritesRoutes);
 app.use('/api/onboarding', onboardingRoutes);
+app.use("/api/dm", dmRoutes);
+app.use("/api/users", userRoutes);
 
 // Start server once DB is connected
 connectDB()
@@ -77,11 +80,5 @@ process.on('unhandledRejection', (reason) => {
 
 // Export logging helper for routes
 module.exports = { app, logToVM4 };
-
-
-
-
-
-
 
 
