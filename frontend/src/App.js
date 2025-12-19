@@ -1,17 +1,17 @@
 // src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import VerifyEmail from './pages/VerifyEmail';
+import VerifyEmail from "./pages/VerifyEmail";
 import History from "./pages/History";
-import Home from './pages/Home';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import WatchStream from './pages/WatchStream';
-import Browse from './pages/Browse';
-import Profile from './pages/Profile';
-import ProtectedRoute from './components/ProtectedRoute';
-import OnboardingQuiz from './pages/OnboardingQuiz';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import WatchStream from "./pages/WatchStream";
+import Browse from "./pages/Browse";
+import Profile from "./pages/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
+import OnboardingQuiz from "./pages/OnboardingQuiz";
 import DirectMessages from "./pages/DirectMessages";
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
         {/* Auth */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
 
         {/* Protected routes (must be logged in) */}
         <Route
@@ -35,6 +36,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/browse"
           element={
@@ -43,6 +45,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/profile"
           element={
@@ -51,6 +54,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/history"
           element={
@@ -59,19 +63,25 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
-  path="/onboarding-quiz"
-  element={
-    <ProtectedRoute>
-      <OnboardingQuiz />
-    </ProtectedRoute>
-  }
-/>
-       <Route path="/verify-email" element={<VerifyEmail />} />
-       <Route path="/dm" element={<DirectMessages />} />
+          path="/onboarding-quiz"
+          element={
+            <ProtectedRoute>
+              <OnboardingQuiz />
+            </ProtectedRoute>
+          }
+        />
 
-
- 
+        {/* ✅ Protect DMs too */}
+        <Route
+          path="/dm"
+          element={
+            <ProtectedRoute>
+              <DirectMessages />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Fallback */}
         <Route path="*" element={<Home />} />

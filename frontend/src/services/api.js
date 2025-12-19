@@ -1,8 +1,11 @@
 // src/services/api.js
-
 // Change this to your backend VM IP + port in production:
 // e.g. "http://192.168.10.20:4000"
 const API_URL = process.env.REACT_APP_API_URL || "http://192.168.10.20:4000";
+
+function getToken() {
+  return localStorage.getItem("token");
+}
 
 // Helper: get auth headers with token
 function getAuthHeaders(extra = {}) {
@@ -11,6 +14,7 @@ function getAuthHeaders(extra = {}) {
     "Content-Type": "application/json",
     ...extra,
   };
+
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
@@ -28,7 +32,6 @@ async function handleResponse(res) {
 }
 
 /* ========== AUTH ========== */
-
 export async function registerUser({ username, email, password }) {
   const res = await fetch(`${API_URL}/api/auth/register`, {
     method: "POST",
@@ -44,6 +47,7 @@ export async function loginUser({ email, password }) {
     headers: getAuthHeaders(),
     body: JSON.stringify({ email, password }),
   });
+
   const data = await handleResponse(res); // { token, user }
   if (data.token) {
     localStorage.setItem("token", data.token);
@@ -64,7 +68,6 @@ export async function fetchCurrentUser() {
 }
 
 /* ========== STREAMS ========== */
-
 export async function fetchRecommendedStreams() {
   const res = await fetch(`${API_URL}/api/streams/recommended`, {
     method: "GET",
@@ -91,22 +94,24 @@ export async function fetchStreamById(id) {
 }
 
 /* ========== HISTORY ========== */
-
+// ✅ FIXED: use API_URL (not API_BASE_URL) and reuse getAuthHeaders()
+// This prevents "No token provided" and avoids the undefined variable error.
 export async function fetchHistory() {
   const res = await fetch(`${API_URL}/api/history`, {
     method: "GET",
     headers: getAuthHeaders(),
   });
-  return handleResponse(res); // { history: [...] }
+  return handleResponse(res); // expects { streams: [...] } or similar
 }
 
+// Your backend expects { streamId } based on your existing code
 export async function addHistoryEntry(streamId) {
   const res = await fetch(`${API_URL}/api/history`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify({ streamId }),
   });
-  return handleResponse(res); // { historyItem }
+  return handleResponse(res); // { historyItem } or { message }
 }
 
 export async function clearHistory() {
@@ -118,7 +123,6 @@ export async function clearHistory() {
 }
 
 /* ========== FAVORITES ========== */
-
 export async function fetchFavorites() {
   const res = await fetch(`${API_URL}/api/favorites`, {
     method: "GET",

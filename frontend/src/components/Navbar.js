@@ -1,28 +1,31 @@
 // src/components/Navbar.js
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/Navbar.css';
-import { getUser, isLoggedIn, clearAuth } from '../utils/auth';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/Navbar.css";
+import { getUser, isLoggedIn, clearAuth } from "../utils/auth";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const loggedIn = isLoggedIn();
   const user = getUser();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   function handleLogout() {
     clearAuth();
-    navigate('/login', { replace: true });
+    navigate("/login", { replace: true });
   }
 
   function handleLogoClick() {
-    navigate('/home');
+    navigate("/home");
   }
 
-  function handleSearchKeyDown(e) {
-    if (e.key === 'Enter' && searchTerm.trim()) {
-      // Send user to /browse with a query param
-      navigate(`/browse?q=${encodeURIComponent(searchTerm.trim())}`);
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    const q = searchTerm.trim();
+    if (q) {
+      navigate(`/browse?q=${encodeURIComponent(q)}`);
+    } else {
+      navigate("/browse");
     }
   }
 
@@ -31,20 +34,24 @@ export default function Navbar() {
       <div
         className="navbar-left"
         onClick={handleLogoClick}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
       >
         <img src="/logo192.png" alt="StreamSync logo" className="navbar-logo" />
         <span className="navbar-title">StreamSync</span>
       </div>
 
       <div className="navbar-center">
-        <input
-          className="navbar-search"
-          placeholder="Search streams, games, or creators"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={handleSearchKeyDown}
-        />
+        <form className="navbar-search-form" onSubmit={handleSearchSubmit}>
+          <input
+            className="navbar-search"
+            placeholder="Search streams, games, or creators"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button className="navbar-search-btn" type="submit">
+            Search
+          </button>
+        </form>
       </div>
 
       <div className="navbar-right">
@@ -58,19 +65,22 @@ export default function Navbar() {
           Browse
         </Link>
 
-	<Link to="/dm" className="nav-link">
-	  DMs
-	</Link>
+        {/* Only show DMs if logged in */}
+        {loggedIn && (
+          <Link to="/dm" className="nav-link">
+            DMs
+          </Link>
+        )}
 
         {loggedIn ? (
           <>
             <Link to="/profile" className="nav-link">
-              {user?.username || 'Profile'}
+              {user?.username || "Profile"}
             </Link>
             <button
               onClick={handleLogout}
               className="nav-link"
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              style={{ background: "none", border: "none", cursor: "pointer" }}
             >
               Logout
             </button>
@@ -89,3 +99,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

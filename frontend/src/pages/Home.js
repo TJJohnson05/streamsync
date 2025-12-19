@@ -1,89 +1,86 @@
 // src/pages/Home.js
-import React from 'react';
-import '../styles/Home.css';
-import Navbar from '../components/Navbar';
+import React, { useEffect, useMemo, useState } from "react";
+import "../styles/Home.css";
+import Navbar from "../components/Navbar";
+import StreamCard from "../components/StreamCard";
+import { fetchRecommendedStreams } from "../services/api";
 
 export default function Home() {
-  const featuredStreams = [
-    {
-      id: 1,
-      title: 'Call of Duty: Live Ranked Grind',
-      streamer: 'AceShooter',
-      thumbnail: 'https://placehold.co/400x225?text=Stream+1',
-      viewers: 3241,
-    },
-    {
-      id: 2,
-      title: 'Minecraft Mega Build Stream',
-      streamer: 'BlockBoi',
-      thumbnail: 'https://placehold.co/400x225?text=Stream+2',
-      viewers: 2190,
-    },
-    {
-      id: 3,
-      title: 'League of Legends – Ranked to Challenger',
-      streamer: 'MiraTV',
-      thumbnail: 'https://placehold.co/400x225?text=Stream+3',
-      viewers: 8710,
-    },
-    {
-      id: 4,
-      title: 'Fortnite Duos Practice',
-      streamer: 'ZaynePlays',
-      thumbnail: 'https://placehold.co/400x225?text=Stream+4',
-      viewers: 598,
-    },
-  ];
+  const [streams, setStreams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const categories = [
-    { id: 1, name: 'Just Chatting', img: 'https://placehold.co/200x200?text=Chatting' },
-    { id: 2, name: 'Valorant', img: 'https://placehold.co/200x200?text=Valorant' },
-    { id: 3, name: 'Apex Legends', img: 'https://placehold.co/200x200?text=Apex' },
-    { id: 4, name: 'Music', img: 'https://placehold.co/200x200?text=Music' },
-  ];
+  useEffect(() => {
+    let alive = true;
+
+    async function run() {
+      try {
+        setLoading(true);
+        setError("");
+        const data = await fetchRecommendedStreams();
+        const list = Array.isArray(data?.streams) ? data.streams : [];
+        if (alive) setStreams(list);
+      } catch (e) {
+        if (alive) setError(e?.message || "Failed to load streams");
+      } finally {
+        if (alive) setLoading(false);
+      }
+    }
+
+    run();
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const categories = useMemo(() => {
+    const set = new Set();
+    for (const s of streams) {
+      if (s?.category) set.add(s.category);
+    }
+    return Array.from(set).slice(0, 10);
+  }, [streams]);
 
   return (
     <div className="home-page">
-      {/* 🔹 Navbar at the top of the page */}
       <Navbar />
 
       <div className="home-content">
-        <section className="featured-section">
-          <h2>Featured Streams</h2>
-          <div className="stream-grid">
-            {featuredStreams.map(stream => (
-              <div key={stream.id} className="stream-card">
-                <img
-                  src={stream.thumbnail}
-                  alt={stream.title}
-                  className="stream-thumbnail"
-                />
-                <div className="stream-info">
-                  <h3>{stream.title}</h3>
-                  <p>{stream.streamer}</p>
-                  <span>{stream.viewers.toLocaleString()} viewers</span>
-                </div>
-              </div>
+        <section className="home-section">
+          <h2 className="home-h2">Featured Streams</h2>
+
+          {loading && <p className="home-status">Loading…</p>}
+          {error && <p className="home-error">{error}</p>}
+
+          {!loading && !error && streams.length === 0 && (
+            <p className="home-status">No recommended streams yet.</p>
+          )}
+
+          <div className="home-stream-grid">
+            {streams.map((s) => (
+              <StreamCard key={s._id || s.id} stream={s} />
             ))}
           </div>
         </section>
 
-        <section className="categories-section">
-          <h2>Popular Categories</h2>
-          <div className="category-grid">
-            {categories.map(cat => (
-              <div key={cat.id} className="category-card">
-                <img
-                  src={cat.img}
-                  alt={cat.name}
-                  className="category-img"
-                />
-                <p>{cat.name}</p>
-              </div>
-            ))}
-          </div>
+        <section className="home-section">
+          <h2 className="home-h2">Popular Categories</h2>
+
+          {categories.length === 0 ? (
+            <p className="home-status">Categories will appear once streams load.</p>
+          ) : (
+            <div className="home-category-row">
+              {categories.map((c) => (
+                <span key={c} className="home-category-pill">
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </div>
   );
 }
+
+

@@ -2,68 +2,35 @@
   background-color: #0e0e10;
   color: #fff;
   min-height: 100vh;
-  padding: 40px;
+  padding: 90px 40px 40px; /* room for fixed navbar */
 }
 
 .browse-title {
   font-size: 2rem;
-  color: #a970ff;
+  color: #dcd3ff;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
-.stream-grid {
+.browse-stream-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
 }
 
-.stream-card {
-  background-color: #18181b;
-  border-radius: 10px;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.browse-status {
+  text-align: center;
+  color: #bdbdd0;
+  margin: 15px 0 25px;
 }
 
-.stream-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+.browse-error {
+  text-align: center;
+  color: #ffb4b4;
+  margin: 15px 0 25px;
 }
 
-.thumbnail-wrapper {
-  position: relative;
-}
 
-.stream-thumbnail {
-  width: 100%;
-  display: block;
-}
 
-.viewer-count {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: #fff;
-  font-size: 0.8rem;
-  padding: 4px 8px;
-  border-radius: 5px;
-}
 
-.stream-info {
-  padding: 10px 15px;
-}
 
-.stream-info h3 {
-  font-size: 1.1rem;
-  margin-bottom: 5px;
-  color: #fff;
-}
-
-.stream-info p {
-  color: #aaa;
-  font-size: 0.9rem;
-}

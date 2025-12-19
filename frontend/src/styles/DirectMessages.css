@@ -1,0 +1,229 @@
+/* src/styles/DirectMessages.css */
+.page {
+  background: #0e0e10;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.page-container {
+  padding: 90px 40px 40px; /* space for navbar */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  margin: 0 0 12px;
+  font-size: 1.6rem;
+  color: #dcd3ff;
+}
+
+.muted {
+  color: #bdbdd0;
+}
+
+.muted.small {
+  font-size: 0.85rem;
+}
+
+.dm-shell {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 14px;
+  min-height: 72vh;
+}
+
+.dm-sidebar,
+.dm-main {
+  background: #141418;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.dm-sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.dm-search {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: #0e0e10;
+  color: #fff;
+}
+
+.dm-thread-list {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: calc(72vh - 110px);
+  overflow: auto;
+}
+
+.dm-thread {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dm-thread:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dm-thread-active {
+  background: rgba(220, 211, 255, 0.10);
+  border-color: rgba(220, 211, 255, 0.22);
+}
+
+.dm-thread-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(220, 211, 255, 0.12);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #dcd3ff;
+  flex: 0 0 auto;
+}
+
+.dm-thread-avatar.lg {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.dm-thread-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.dm-thread-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.dm-thread-name {
+  font-weight: 800;
+}
+
+.dm-thread-time {
+  font-size: 0.85rem;
+  color: #bdbdd0;
+}
+
+.dm-thread-preview {
+  font-size: 0.9rem;
+  color: #bdbdd0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dm-empty {
+  padding: 14px;
+}
+
+.dm-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.dm-blank {
+  padding: 28px;
+}
+
+.dm-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dm-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dm-action {
+  background: #1f1f23;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.dm-chat {
+  padding: 16px;
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dm-empty-chat {
+  margin-top: 20px;
+}
+
+.dm-bubble {
+  max-width: 70%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dm-bubble.me {
+  align-self: flex-end;
+  background: rgba(220, 211, 255, 0.12);
+  border-color: rgba(220, 211, 255, 0.20);
+}
+
+.dm-bubble-time {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #bdbdd0;
+}
+
+.dm-compose {
+  padding: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  gap: 10px;
+}
+
+.dm-input {
+  flex: 1;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: #0e0e10;
+  color: #fff;
+}
+
+.dm-send {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  background: #dcd3ff;
+  color: #0e0e10;
+  font-weight: 800;
+  cursor: pointer;
+}
+
