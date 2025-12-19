@@ -58,6 +58,10 @@ export default function Navbar() {
           Browse
         </Link>
 
+	<Link to="/dm" className="nav-link">
+	  DMs
+	</Link>
+
         {loggedIn ? (
           <>
             <Link to="/profile" className="nav-link">

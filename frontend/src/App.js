@@ -12,6 +12,7 @@ import Browse from './pages/Browse';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import OnboardingQuiz from './pages/OnboardingQuiz';
+import DirectMessages from "./pages/DirectMessages";
 
 function App() {
   return (
@@ -67,7 +68,7 @@ function App() {
   }
 />
        <Route path="/verify-email" element={<VerifyEmail />} />
-
+       <Route path="/dm" element={<DirectMessages />} />
 
 
  
@@ -80,6 +81,3 @@ function App() {
 }
 
 export default App;
-
-
-
